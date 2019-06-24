@@ -271,7 +271,7 @@ void __attribute__(( noinline )) scanInputs()
 {
 	
 	
-	static uint8_t ind = 0;
+	static uint32_t ind = 0;
 	static uint8_t grp = 0;
 	
 	uint8_t knobInd = ind & 0x07;
@@ -343,12 +343,7 @@ void __attribute__(( noinline )) scanInputs()
 	ind = (ind+1) & 0x0F;
 	if(!ind) ++grp &= 0x03;
 	
-	//set the channel for the next read
-	for(uint32_t i = 0; i < 4; ++i)
-	{
-		digitalWrite(ADDR_PINS[i], ((ind >> i) & 1));
-	}
-	//palWriteGroup(GPIOA, 0x0F, 4, ind);
+	
 	
 	
 	uint8_t on[4];
@@ -356,18 +351,39 @@ void __attribute__(( noinline )) scanInputs()
 	{
 		on[i] =  (LED[i] >> ind) & 1;
 	}
-	if(ind == blinkInd)  on[blinkGrp] = (ticks >> 10) & 1;
+	if(ind == blinkInd)  on[blinkGrp] = (ticks >> 11) & 1;
 
-	//set the LEDS
+	uint32_t LED_REG = 0;
 	for(uint32_t i = 0; i < 4; ++i)
+	{
+		LED_REG |= (on[i] << LED_BITS[i]);
+	}
+	GPIOA_PDOR = LED_REG;
+	//set the LEDS
+	/* for(uint32_t i = 0; i < 4; ++i)
 	{
 		digitalWrite(LED_PINS[i], (on[i])? HIGH: LOW);
 		//digitalWrite(LED_PINS[i], LOW);
-	}
+	} */
 	//palWritePad(GPIOC, 4, on[0]);
 	//palWritePad(GPIOC, 5, on[1]);
 	//palWritePad(GPIOA, 0, on[2]);
 	//palWritePad(GPIOA, 1, on[3]);
+	
+	uint32_t ADDR_REG = 0;
+	for(uint32_t i = 0; i < 4; ++i)
+	{
+		ADDR_REG |= ((ind >> i) & 1) << ADDR_BITS[i];
+	}
+	GPIOB_PDOR = ADDR_REG;
+	
+	
+	//set the channel for the next read
+/* 	for(uint32_t i = 0; i < 4; ++i)
+	{
+		digitalWrite(ADDR_PINS[i], ((ind >> i) & 1));
+	}
+	//palWriteGroup(GPIOA, 0x0F, 4, ind); */
 	
 
 }

@@ -50,9 +50,11 @@ static const uint8_t WAVE_REPS = WAVE_RES/WAVE_IND_INC;
 
 
 static const uint8_t MX_PINS[] = {0,1,2,3};
-static const uint8_t LED_PINS[] = {4,5,6,7};
-static const uint8_t ADDR_PINS[] = {24,25,26,27};
-static const uint8_t KB_PINS[] = {28,29, 8};
+static const uint8_t LED_PINS[] = {25,26,27,28};
+static const uint8_t LED_BITS[] = {5,14,15,16};
+static const uint8_t ADDR_PINS[] = {29,30,31,32};
+static const uint8_t ADDR_BITS[] = {18,19,10,11};
+static const uint8_t KB_PINS[] = {38,37, 36};
 
 //string settings for files
 static const uint8_t MAXFNAMELEN =(6 + 1);

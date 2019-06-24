@@ -1,5 +1,5 @@
 #define PER_LOOP 30
-#define HOLD_LOOPS 3000
+#define HOLD_LOOPS 2000
 #define DEAD_LOOPS 9000
 
 #include <TeensyThreads.h>
@@ -25,7 +25,7 @@ void inputChecker()
   {
     handleKnobs();
     checkWriteElem();
-    threads.yield();    
+    //threads.yield();    
   }
 }
 
